@@ -11,9 +11,11 @@ public class Main {
         dc = new DinnerConstructor();
         scanner = new Scanner(System.in);
 
+
         while (true) {
             printMenu();
-            String command = scanner.nextLine();
+            String command = scanner.nextLine().trim();
+
 
             switch (command) {
                 case "1":
@@ -23,7 +25,11 @@ public class Main {
                     generateDishCombo();
                     break;
                 case "3":
+                    System.out.println("Программа завершена. До новых встреч.");
                     return;
+                default:
+                    System.out.println("Некорректная команда. Введите 1, 2 или 3, а ваш ввод " + command);
+                    break;
             }
         }
     }
@@ -41,7 +47,8 @@ public class Main {
         System.out.println("Введите название блюда:");
         String dishName = scanner.nextLine();
 
-        // добавьте новое блюдо
+        dc.addCourse(dishType, dishName);
+
     }
 
     private static void generateDishCombo() {
@@ -51,15 +58,24 @@ public class Main {
         int numberOfCombos = scanner.nextInt();
         scanner.nextLine();
 
+        StringBuilder allItems = new StringBuilder(); // добавление изменяемого СБ для хранения ввода пользователя
+        String nextItem; // иниц внутри лупа чтобы обновлялся
         System.out.println("Вводите типы блюда, разделяя символом переноса строки (enter). Для завершения ввода введите пустую строку");
-        String nextItem = scanner.nextLine();
 
         //реализуйте ввод типов блюд
-        while (!nextItem.isEmpty()) {
+        while (!(nextItem= scanner.nextLine()).isEmpty()) {
+            allItems.append(nextItem + "\n");
 
         }
 
-        // сгенерируйте комбинации блюд и выведите на экран
+        // Проверка перед вызовом метода
+        if (!allItems.isEmpty() && numberOfCombos > 0) {
+            dc.addAndPrintUsersChoice(allItems.toString(), numberOfCombos);
+        } else {
+            System.out.println("Ошибка: Пустой список типов блюд или неверное количество наборов.");
+        }
+
 
     }
+
 }
